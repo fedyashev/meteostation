@@ -21,6 +21,15 @@ router.get("/", (req, res) => {
   res.render("home", obj);
 });
 
+router.post("/set_parameters", (req, res) => {
+  try {
+    obj = req.body;
+  } catch (err) {
+    console.log(err);
+  }
+  res.end();
+});
+
 router.use((req, res, next) => {
   res.status(404).render("404");
 });
