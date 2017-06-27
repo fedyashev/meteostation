@@ -1,0 +1,19 @@
+{
+  "name": "meteostation",
+  "version": "1.0.0",
+  "description": "Home meteostation",
+  "main": "meteostation.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon meteostation.js"
+  },
+  "author": "Fedyashev Andrei",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "express-handlebars": "^3.0.0",
+    "morgan": "^1.8.2"
+  }
+}
