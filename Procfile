@@ -1,0 +1,1 @@
+web: node meteostation.js
