@@ -71,13 +71,12 @@ router.post("/set_parameters", (req, res) => {
           console.log(err);
           return;
         }
-        if ((weatherDataArray.length > 0 && (weatherDataArray[0].data - Date.now() > 5 * 60 * 1000)) || weatherDataArray.length === 0) {
-          var weatherData = new WeatherData({
-            temperature: obj.dht22_temperature,
-            humidity: obj.dht22_humidity,
-            pressure: obj.bmp180_pressure
-          });
-        }
+        var weatherData = new WeatherData({
+          temperature: obj.dht22_temperature,
+          humidity: obj.dht22_humidity,
+          pressure: obj.bmp180_pressure
+        });
+        // if ((weatherDataArray.length > 0 && (weatherDataArray[0].data - Date.now() > 5 * 60 * 1000)) || weatherDataArray.length === 0) {}
       });
   } catch (err) {
     console.log(err);
