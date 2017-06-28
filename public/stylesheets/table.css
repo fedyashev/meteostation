@@ -1,0 +1,56 @@
+table {
+  /*margin: 0 auto;*/
+  /*padding-top: 10px;*/
+  /*padding-bottom: 10px;*/
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  font-size: 14px;
+  /*border-radius: 10px;*/
+  /*border-spacing: 0;*/
+  text-align: center;
+}
+
+th {
+  background: #BCEBDD;
+  background: CornflowerBlue;
+  color: white;
+  text-shadow: 0 1px 1px #2D2020;
+  /*padding: 10px 20px;*/
+  text-align: center;
+}
+
+th, td {
+  border-style: solid;
+  border-width: 0 1px 1px 0;
+  border-color: RosyBrown;
+}
+
+/*th:first-child, td:first-child {
+  text-align: center;
+}*/
+
+th:first-child {
+  /*border-top-left-radius: 10px;*/
+}
+
+th:last-child {
+  /*border-top-right-radius: 10px;*/
+  /*border-right: none;*/
+}
+
+td {
+  /*padding: 5px 20px;*/
+  background: #F8E391;
+  font-size: small;
+}
+
+tr:last-child td:first-child {
+  /*border-radius: 0 0 0 10px;*/
+}
+
+tr:last-child td:last-child {
+  /*border-radius: 0 0 10px 0;*/
+}
+
+tr td:last-child {
+  /*border-right: none;*/
+}
