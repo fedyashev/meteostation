@@ -4,8 +4,17 @@ var bodyParser = require("body-parser");
 var handlebars = require("express-handlebars");
 var morgan = require("morgan");
 var path = require("path");
+var mongoose = require("mongoose");
 
 var router = require("./routes");
+var credentials = require("./credentials.js");
+
+// Set mongoDB connection
+mongoose.connect(credentials.mongo.connectionString, {
+  server: {
+    socketOptions: {keepAlive: 1},
+  },
+});
 
 var app = express();
 var port = process.env.PORT || 3000;
