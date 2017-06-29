@@ -72,7 +72,7 @@ router.post("/set_parameters", (req, res) => {
   try {
     obj = req.body;
     WeatherData.create({
-      temperature: findParameterValue(obj.parameters, "dht22_temperature"),
+      temperature: findParameterValue(obj.parameters, "dht22_tempetature"),
       humidity: findParameterValue(obj.parameters, "dht22_humidity"),
       pressure: findParameterValue(obj.parameters, "bmp180_pressure")
     });
