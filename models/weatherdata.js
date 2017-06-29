@@ -5,9 +5,9 @@ mongooseAutoIncrement.initialize(mongoose.connection);
 
 var WeatherDataSchema = mongoose.Schema({
   date: {type: Date, default: Date.now},
-  temperature: Number,
-  humidity: Number,
-  pressure: Number
+  temperature: String,
+  humidity: String,
+  pressure: String
 });
 
 WeatherDataSchema.plugin(mongooseAutoIncrement.plugin, "WeaterData");
