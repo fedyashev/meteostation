@@ -21,8 +21,9 @@ var obj = {
 
 var saveEveryMinutes = 30;
 var lastPostDate = new Date();
+var deltaHours = 3;
 
-var findParameterValue = function(parameters, parameterName) {
+function findParameterValue(parameters, parameterName) {
   for (var i = 0; i < parameters.length; i++) {
     if (parameters[i].name === parameterName) return parameters[i].value;
   }
@@ -40,7 +41,8 @@ function renderChart(res, parameterName, chartDescriptionObject) {
           return;
         }
         var dataX = JSON.stringify(weatherDataArray.map(function(weatherData) {
-          return weatherData.date.toLocaleTimeString("en-Us", {hour12: false});
+          //return weatherData.date.toLocaleTimeString("ru-Ru", {hour12: false});
+          return weatherData.date.getHours() + deltaHours;
         }).reverse());
         var dataY = JSON.stringify(weatherDataArray.map(function(weatherData) {
           return weatherData[parameterName];
@@ -97,7 +99,7 @@ router.post("/set_parameters", (req, res) => {
   try {
     obj = req.body;
     var currentDate = new Date();
-    if ((currentDate.getMinutes() % saveEveryMinutes == 0) && (currentDate.getMinutes() !== lastPostDate.getMinutes())) {
+    if (currentDate.getHours() !== lastPostDate.getHours()) {
       WeatherData.create({
         temperature: findParameterValue(obj.parameters, "dht22_tempetature"),
         humidity: findParameterValue(obj.parameters, "dht22_humidity"),
