@@ -55,12 +55,14 @@ router.get("/pressure", (req, res) => {
           console.log(err);
           return;
         }
-        res.render("pressure", {pressureData: JSON.stringify(weatherDataArray.map((weatherData) => {
+        var pressureDataString = JSON.stringify(weatherDataArray.map((weatherData) => {
           return {
             x: weatherData.date.toLocaleTimeString(),
             y: weatherData.pressure
           };
-        }))});
+        }));
+        console.log(pressureDataString);
+        res.render("pressure", {pressureData: pressureDataString});
       });
   } catch (err) {
     console.log(err);
