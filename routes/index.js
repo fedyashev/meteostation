@@ -59,6 +59,7 @@ router.get("/pressure", (req, res) => {
 router.post("/set_parameters", (req, res) => {
   try {
     obj = req.body;
+    count++;
     if (count > 60) {
       WeatherData.create({
         temperature: findParameterValue(obj.parameters, "dht22_tempetature"),
