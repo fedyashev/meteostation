@@ -34,6 +34,13 @@ var pressureDataArray = [
   {x: 12, y: 744}
 ];
 
+var findParameterValue = function(parameters, parameterName) => {
+  for (var i = 0; i < parameters.length; i++) {
+    if (parameters[i].name === parameterName) return parameters[i].value;
+  }
+  return null;
+};
+
 router.get("/", (req, res) => {
   res.render("home", obj);
 });
@@ -63,11 +70,11 @@ router.get("/pressure", (req, res) => {
 
 router.post("/set_parameters", (req, res) => {
   try {
-    var weatherData = req.body;
+    obj = req.body;
     WeatherData.create({
-      temperature: weatherData.dht22_temperature,
-      humidity: weatherData.dht22_humidity,
-      pressure: weatherData.bmp180_pressure
+      temperature: findParameterValue(obj.parameters, "dht22_temperature"),
+      humidity: findParameterValue(obj.parameters, "dht22_humidity"),
+      pressure: findParameterValue(obj.parameters, "bmp180_pressure")
     });
     // WeatherData.find()
     //   .sort({data: -1})
