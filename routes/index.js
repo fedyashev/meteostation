@@ -34,7 +34,7 @@ var pressureDataArray = [
   {x: 12, y: 744}
 ];
 
-var findParameterValue = function(parameters, parameterName) => {
+var findParameterValue = function(parameters, parameterName) {
   for (var i = 0; i < parameters.length; i++) {
     if (parameters[i].name === parameterName) return parameters[i].value;
   }
