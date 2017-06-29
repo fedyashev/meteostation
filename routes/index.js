@@ -19,20 +19,7 @@ var obj = {
     ]
 };
 
-var pressureDataArray = [
-  {x: 1, y: 740},
-  {x: 2, y: 742},
-  {x: 3, y: 743},
-  {x: 4, y: 742},
-  {x: 5, y: 745},
-  {x: 6, y: 746},
-  {x: 7, y: 746},
-  {x: 8, y: 746},
-  {x: 9, y: 747},
-  {x: 10, y: 746},
-  {x: 11, y: 745},
-  {x: 12, y: 744}
-];
+var count = 0;
 
 var findParameterValue = function(parameters, parameterName) {
   for (var i = 0; i < parameters.length; i++) {
@@ -55,14 +42,13 @@ router.get("/pressure", (req, res) => {
           console.log(err);
           return;
         }
-        var pressureDataString = JSON.stringify(weatherDataArray.map((weatherData) => {
-          return {
-            x: weatherData.date.toLocaleString(),
-            y: weatherData.pressure
-          };
+        var dataX = JSON.stringify(weatherDataArray.map(function(weatherData) {
+          return weatherData.date.toLocaleTimeString("en-Us", {hour12: false});
         }));
-        console.log(pressureDataString);
-        res.render("pressure", {pressureData: pressureDataString});
+        var dataY = JSON.stringify(weatherDataArray.map(function(weatherData) {
+          return weatherData.pressure;
+        }));
+        res.render("pressure", {pressureDataX: dataX, pressureDataY: dataY});
       });
   } catch (err) {
     console.log(err);
@@ -73,21 +59,14 @@ router.get("/pressure", (req, res) => {
 router.post("/set_parameters", (req, res) => {
   try {
     obj = req.body;
-    WeatherData.create({
-      temperature: findParameterValue(obj.parameters, "dht22_tempetature"),
-      humidity: findParameterValue(obj.parameters, "dht22_humidity"),
-      pressure: findParameterValue(obj.parameters, "bmp180_pressure")
-    });
-    // WeatherData.find()
-    //   .sort({data: -1})
-    //   .exec((err, weatherDataArray) => {
-    //     if (err) {
-    //       console.log(err);
-    //       return;
-    //     }
-        
-    //     // if ((weatherDataArray.length > 0 && (weatherDataArray[0].data - Date.now() > 5 * 60 * 1000)) || weatherDataArray.length === 0) {}
-    //   });
+    if (count > 60) {
+      WeatherData.create({
+        temperature: findParameterValue(obj.parameters, "dht22_tempetature"),
+        humidity: findParameterValue(obj.parameters, "dht22_humidity"),
+        pressure: findParameterValue(obj.parameters, "bmp180_pressure")
+      });
+      count = 0;
+    }
   } catch (err) {
     console.log(err);
   }
