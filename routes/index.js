@@ -6,20 +6,21 @@ var obj = {
     parameters: [
       {
         name: "Temperature",
-        value: "25.5"
+        value: "test"
       },
       {
         name: "Humidity",
-        value: "60.6"
+        value: "test"
       },
       {
         name: "Pressure",
-        value: "745.8"
+        value: "test"
       }
     ]
 };
 
 var count = 0;
+var maxCounts = 12 * 30;  // wifi module post data to server 12 times per minute
 
 var findParameterValue = function(parameters, parameterName) {
   for (var i = 0; i < parameters.length; i++) {
@@ -28,14 +29,10 @@ var findParameterValue = function(parameters, parameterName) {
   return null;
 };
 
-router.get("/", (req, res) => {
-  res.render("home", obj);
-});
-
-router.get("/pressure", (req, res) => {
+function renderChart(res, parameterName, chartDescriptionObject) {
   try {
     WeatherData.find()
-      //.sort({data: 1})
+      .sort({date: -1})
       .limit(12)
       .exec(function(err, weatherDataArray) {
         if (err) {
@@ -44,23 +41,63 @@ router.get("/pressure", (req, res) => {
         }
         var dataX = JSON.stringify(weatherDataArray.map(function(weatherData) {
           return weatherData.date.toLocaleTimeString("en-Us", {hour12: false});
-        }));
+        }).reverse());
         var dataY = JSON.stringify(weatherDataArray.map(function(weatherData) {
-          return weatherData.pressure;
-        }));
-        res.render("pressure", {pressureDataX: dataX, pressureDataY: dataY});
+          return weatherData[parameterName];
+        }).reverse());
+        res.render("chart", {
+          chartHeader: chartDescriptionObject.chartHeader,
+          scaleXDescription: chartDescriptionObject.scaleXDescription,
+          curveName: chartDescriptionObject.curveName,
+          dataX: dataX,
+          dataY: dataY
+        });
       });
   } catch (err) {
     console.log(err);
-    res.render("pressure", {pressureData: JSON.stringify([{}])});
+    res.render("chart", {
+      chartHeader: chartDescriptionObject.chartHeader,
+      scaleXDescription: chartDescriptionObject.scaleXDescription,
+      curveName: chartDescriptionObject.curveName,
+      dataX: [],
+      dataY: []
+    });
   }
+}
+
+router.get("/", (req, res) => {
+  res.render("home", obj);
+});
+
+router.get("/pressure", (req, res) => {
+  return renderChart(res, "pressure", {
+    chartHeader: "Датчик давления BMP180",
+    scaleXDescription: "давление, мм рт.ст.",
+    curveName: "Давление"
+  });
+});
+
+router.get("/temperature", (req, res) => {
+  return renderChart(res, "temperature", {
+    chartHeader: "Датчик температуры DHT22",
+    scaleXDescription: "градусы, *С",
+    curveName: "Температура"
+  });
+});
+
+router.get("/humidity", (req, res) => {
+  return renderChart(res, "humidity", {
+    chartHeader: "Датчик влажности DHT22",
+    scaleXDescription: "влажность, %",
+    curveName: "Влажность"
+  });
 });
 
 router.post("/set_parameters", (req, res) => {
   try {
     obj = req.body;
     count++;
-    if (count > 60) {
+    if (count > maxCounts) {
       WeatherData.create({
         temperature: findParameterValue(obj.parameters, "dht22_tempetature"),
         humidity: findParameterValue(obj.parameters, "dht22_humidity"),

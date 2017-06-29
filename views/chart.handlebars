@@ -21,7 +21,7 @@
         print: false
       },
       primaryHeader: {
-        text: "Датчик давления BMP180"
+        text: "{{chartHeader}}"
       },
       // chartLegend: {
       //   align: 'right',
@@ -42,18 +42,18 @@
         }
       },
       axisX: {
-        categoricalValues: {{{pressureDataX}}}
+        categoricalValues: {{{dataX}}}
       },
       axisY: {
         title: {
-          text: "Давление (мм рт.ст.)"
+          text: "{{scaleXDescription}}"
         }
       },
       dataSeries: [
         {
           seriesType: 'line',
-          collectionAlias: "Давление",
-          data: {{{pressureDataY}}}
+          collectionAlias: "{{curveName}}",
+          data: {{{dataY}}}
         }
       ]
     });
