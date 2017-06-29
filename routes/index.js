@@ -21,7 +21,7 @@ var obj = {
 
 var count = 0;
 var maxCounts = 12 * 30;  // wifi module post data to server 12 times per minute
-var lastPostDate = Date.now();
+var lastPostDate = new Date();
 
 var findParameterValue = function(parameters, parameterName) {
   for (var i = 0; i < parameters.length; i++) {
@@ -98,12 +98,14 @@ router.post("/set_parameters", (req, res) => {
   try {
     obj = req.body;
     count++;
-    if (Date.now().getMinutes() % 5 == 0) {
+    var currentDate = new Date();
+    if ((currentDate.getMinutes() % 5 == 0) && (currentDate.getMinutes() !== lastPostDate.getMinutes())) {
       WeatherData.create({
         temperature: findParameterValue(obj.parameters, "dht22_tempetature"),
         humidity: findParameterValue(obj.parameters, "dht22_humidity"),
         pressure: findParameterValue(obj.parameters, "bmp180_pressure")
       });
+      lastPostDate = currentDate;
       count = 0;
     }
   } catch (err) {
