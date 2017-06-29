@@ -35,7 +35,7 @@ router.get("/", (req, res) => {
 router.get("/pressure", (req, res) => {
   try {
     WeatherData.find()
-      .sort({data: -1})
+      .sort({data: 1})
       .limit(12)
       .exec(function(err, weatherDataArray) {
         if (err) {
