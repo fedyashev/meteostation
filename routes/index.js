@@ -63,11 +63,11 @@ router.get("/pressure", (req, res) => {
 
 router.post("/set_parameters", (req, res) => {
   try {
-    obj = req.body;
+    var weatherData = req.body;
     WeatherData.create({
-      temperature: obj.dht22_temperature,
-      humidity: obj.dht22_humidity,
-      pressure: obj.bmp180_pressure
+      temperature: weatherData.dht22_temperature,
+      humidity: weatherData.dht22_humidity,
+      pressure: weatherData.bmp180_pressure
     });
     // WeatherData.find()
     //   .sort({data: -1})
