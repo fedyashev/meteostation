@@ -57,7 +57,7 @@ router.get("/pressure", (req, res) => {
         }
         var pressureDataString = JSON.stringify(weatherDataArray.map((weatherData) => {
           return {
-            x: weatherData.date.getSeconds(),
+            x: weatherData.date.getTime(),
             y: weatherData.pressure
           };
         }));
