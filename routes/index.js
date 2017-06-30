@@ -43,7 +43,7 @@ function renderChart(res, parameterName, chartDescriptionObject) {
         var dataX = JSON.stringify(weatherDataArray.map(function(weatherData) {
           //return weatherData.date.toLocaleTimeString("ru-Ru", {hour12: false});
           // return weatherData.date.getHours() + deltaHours;
-          return (new Date(weatherData.date + hourDifference)).getHours();
+          return (new Date(weatherData.date.toLocaleString("ru-Ru", {timeZone: "Europe/Minsk"}))).getHours();
         }).reverse());
         var dataY = JSON.stringify(weatherDataArray.map(function(weatherData) {
           return weatherData[parameterName];
