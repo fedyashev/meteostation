@@ -21,7 +21,7 @@ var obj = {
 
 var saveEveryMinutes = 30;
 var lastPostDate = new Date();
-var deltaHours = 3;
+var hourDifference = 3 * 60 * 1000;
 
 function findParameterValue(parameters, parameterName) {
   for (var i = 0; i < parameters.length; i++) {
@@ -42,7 +42,8 @@ function renderChart(res, parameterName, chartDescriptionObject) {
         }
         var dataX = JSON.stringify(weatherDataArray.map(function(weatherData) {
           //return weatherData.date.toLocaleTimeString("ru-Ru", {hour12: false});
-          return weatherData.date.getHours() + deltaHours;
+          // return weatherData.date.getHours() + deltaHours;
+          return (new Date(weatherData.date + hourDifference)).getHours();
         }).reverse());
         var dataY = JSON.stringify(weatherDataArray.map(function(weatherData) {
           return weatherData[parameterName];
