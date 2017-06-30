@@ -65,8 +65,66 @@ function renderChart(res, parameterName, chartDescriptionObject) {
   }
 }
 
+function renderHomePage(res) {
+  var result = {
+    dataX: "",
+    temperatureChart: {
+      data: "",
+      scaleName: "",
+      curveName: ""
+    },
+    humidityChart: {
+      data: "",
+      scaleName: "",
+      curveName: ""
+    },
+    pressureChart: {
+      data: "",
+      scaleName: "",
+      curveName: ""
+    }
+  };
+  try {
+    WeatherData.find()
+      .sort({date: -1})
+      .limit(12)
+      .exec(function(err, weatherDataArray) {
+        if (err) {
+          console.log(err);
+          return null;
+        }
+        var dataX = [];
+        var temperatureData = [];
+        var humidityData = [];
+        var pressureData = [];
+        for (var i = weatherDataArray.length - 1; i >= 0; i--) {
+          dataX.push((new Date(weatherDataArray[i].date.toLocaleString("ru-Ru", {timeZone: "Europe/Minsk"}))).getHours());
+          temperatureData.push(weatherDataArray[i].temperature);
+          humidityData.push(weatherDataArray[i].humidity);
+          pressureData.push(weatherDataArray[i].pressure);
+        }
+        result.dataX = JSON.stringify(dataX);
+        result.temperatureChart.data = JSON.stringify(temperatureData);
+        result.humidityChart.data = JSON.stringify(humidityData);
+        result.pressureChart.data = JSON.stringify(pressureData);
+        result.mutliChartHeader = "Графики показаний";
+        result.temperatureChart.scaleName = "градусы, *С";
+        result.temperatureChart.curveName = "Температура";
+        result.humidityChart.scaleName = "влажность, %";
+        result.humidityChart.curveName = "Влажность";
+        result.pressureChart.scaleName = "давление, мм рт.ст.";
+        result.pressureChart.curveName = "Давление";
+        console.log(result);
+        res.render("home", {parameters: obj.parameters, multiChart: result});
+      });
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 router.get("/", (req, res) => {
-  res.render("home", obj);
+  renderHomePage(res);
 });
 
 router.get("/pressure", (req, res) => {
