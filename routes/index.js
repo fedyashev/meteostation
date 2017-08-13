@@ -157,9 +157,9 @@ router.post("/set_parameters", (req, res) => {
     var currentDate = new Date();
     if (currentDate.getHours() !== lastPostDate.getHours()) {
       WeatherData.create({
-        temperature: findParameterValue(obj.parameters, "dht22_tempetature"),
-        humidity: findParameterValue(obj.parameters, "dht22_humidity"),
-        pressure: findParameterValue(obj.parameters, "bmp180_pressure")
+        temperature: findParameterValue(obj.parameters, "temperature"),
+        humidity: findParameterValue(obj.parameters, "humidity"),
+        pressure: findParameterValue(obj.parameters, "pressure")
       });
       lastPostDate = currentDate;
     }
