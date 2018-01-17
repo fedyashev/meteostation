@@ -114,7 +114,7 @@ function renderHomePage(res) {
         result.humidityChart.curveName = "Влажность";
         result.pressureChart.scaleName = "давление, мм рт.ст.";
         result.pressureChart.curveName = "Давление";
-        console.log(result);
+        //console.log(result);
         res.render("home", {parameters: obj.parameters, multiChart: result});
       });
   } catch (err) {
