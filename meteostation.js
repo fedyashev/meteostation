@@ -6,7 +6,9 @@ var morgan = require("morgan");
 var path = require("path");
 var mongoose = require("mongoose");
 
-var router = require("./routes");
+var index = require("./routes/index");
+var api = require("./routes/api");
+
 var credentials = require("./credentials.js");
 
 // Set mongoDB connection
@@ -31,7 +33,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(morgan("short"));
 
 // Set router
-app.use("/", router);
+app.use("/", index);
+app.use("/api", api);
 
 app.listen(port, function() {
   console.log("Server started at " + port);
